@@ -1,0 +1,122 @@
+/* Headings */
+header {
+    padding: 2%;
+    text-align: center;
+    font-family: helvetica;
+    background-color: #7093a4;
+    border-width: 0.1px;
+}
+
+h2 {
+    text-align: center;
+}
+
+body {
+    background-color: #a0d2eb;
+}
+
+/* Lists and Links */
+
+ul {
+    list-style: none;
+}
+
+a:link {
+   text-decoration: none; 
+   color: black;
+}
+
+a:active {
+    background-color: #5AA9E6;
+}
+
+a:visited {
+    color: black;
+}
+
+#navs li {
+    border: solid;
+    border-width: 0.1px;
+    margin: 20px;
+    padding: 10px;
+    background-color:#ffffff;
+    font-family: 'courier new';
+    font-weight: bold;
+}
+
+#navs li:active {
+    background-color: #5AA9E6;
+}
+
+
+#number {
+    border: solid;
+    border-width: 0.2px;
+    border-radius: 10px;
+    text-align: center;
+    width: 20px;
+    background-color: #a0d2eb;
+}
+
+#note {
+    width: 25vw;
+    background-color:  #ffffff;
+    border: solid;
+    margin: 10px;
+    padding: 10px;
+    display: grid;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+}
+
+
+#left {
+width: 25vw;
+height: 100vh;
+background-color: #80a8bc;
+}
+
+#note-content {
+    width: 50vw;
+    margin: 75px;
+}
+
+
+/* Buttons */
+
+button {
+    border: solid;
+    border-width: 0.1px;
+    margin: 20px;
+    padding: 10px;
+    background-color:#a0d2eb;
+    font-family: 'courier new';
+    font-weight: bold;
+    font-size: 15px; 
+}
+
+#add {
+margin-left: 270px;
+background-color: #ffffff;
+}
+
+#delete {
+    margin-left: 200px;
+}
+
+.add-note {
+    display: grid;
+    margin: 50px;
+    border: solid;
+    background-color: white;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+input, select {
+    margin: 15px;
+    padding: 10px;
+}
