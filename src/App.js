@@ -5,9 +5,10 @@ import NotePageNav from "./NotePageNav";
 import NoteListMain from "./NoteListMain";
 import NotePageMain from "./NotePage";
 import "./App.css";
-import Store from "./Store.js";
 import FormPage from "./FormPage";
 import AddNotePage from "./AddNotePage";
+import NotefulContext from "./Context";
+import config from "./config";
 
 class App extends Component {
   state = {
@@ -16,81 +17,69 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.setState(Store);
+    Promise.all([
+      fetch(`${config.API_ENDPOINT}/notes`),
+      fetch(`${config.API_ENDPOINT}/folders`),
+    ])
+      .then(([notesRes, foldersRes]) => {
+        if (!notesRes.ok) return notesRes.json().then((e) => Promise.reject(e));
+        if (!foldersRes.ok)
+          return foldersRes.json().then((e) => Promise.reject(e));
+        return Promise.all([notesRes.json(), foldersRes.json()]);
+      })
+      .then(([notes, folders]) => {
+        this.setState({ notes, folders });
+      })
+      .then(([notes, folders]) => {
+        this.setState({ notes, folders });
+      })
+      .catch((error) => {
+        console.error({ error });
+      });
   }
 
+  deleteNote = (noteId) => {
+    this.setState({
+      notes: this.state.notes.filter((note) => note.id !== noteId),
+    });
+  };
+
   renderNavRoutes() {
-    let findNote = (notes = [], noteId) =>
-      notes.find((note) => note.id === noteId);
-
-    let findFolder = (folders = [], folderId) =>
-      folders.find((folder) => folder.id === folderId);
-
-    const { notes, folders } = this.state;
-
     return (
       <>
         {["/", "/folder/:folderId"].map((path) => (
-          <Route
-            exact
-            key={path}
-            path={path}
-            render={(routeProps) => (
-              <NoteListNav folders={folders} notes={notes} {...routeProps} />
-            )}
-          />
+          <Route exact key={path} path={path} component={NoteListNav} />
         ))}
-        <Route
-          path="/note/:noteId"
-          render={(routeProps) => {
-            const { noteId } = routeProps.match.params;
-            const note = findNote(notes, noteId) || {};
-            const folder = findFolder(folders, note.folderId);
-            return <NotePageNav {...routeProps} folder={folder} />;
-          }}
-        />
+        <Route path="/note/:noteId" component={NotePageNav} />
+        <Route path="/add-folder" component={NotePageNav} />
+        <Route path="/add-note" component={NotePageNav} />;
       </>
     );
   }
 
   renderMainRoutes() {
-    let getNotesForFolder = (notes = [], folderId) =>
-      !folderId ? notes : notes.filter((note) => note.folderId === folderId);
-    let findNote = (notes = [], noteId) =>
-      notes.find((note) => note.id === noteId);
+    
 
-    const { notes, folders } = this.state;
     return (
       <>
         {["/", "/folder/:folderId"].map((path) => (
-          <Route
-            exact
-            key={path}
-            path={path}
-            render={(routeProps) => {
-              const { folderId } = routeProps.match.params;
-              const notesForFolder = getNotesForFolder(notes, folderId);
-              return <NoteListMain {...routeProps} notes={notesForFolder} />;
-            }}
-          />
+          <Route exact key={path} path={path} component={NoteListMain} />
         ))}
         <Route path="/add-folder" component={FormPage} />
         <Route path="/add-note" component={AddNotePage} />
-        <Route
-          path="/note/:noteId"
-          render={(routeProps) => {
-            const { noteId } = routeProps.match.params;
-            const note = findNote(notes, noteId);
-            return <NotePageMain {...routeProps} note={note} />;
-          }}
-        />
+        <Route path="/note/:noteId" component={NotePageMain} />
       </>
     );
   }
 
   render() {
+    const contextValue = {
+      folders: this.state.folders,
+      notes: this.state.notes,
+      deleteNote: this.deleteNote,
+    };
     return (
-      <>
+      <NotefulContext.Provider value={contextValue}>
         <header>
           <h1>
             <Link to="/">Noteful</Link>
@@ -100,7 +89,7 @@ class App extends Component {
           <nav id="left">{this.renderNavRoutes()}</nav>
           <main id="right">{this.renderMainRoutes()}</main>
         </div>
-      </>
+      </NotefulContext.Provider>
     );
   }
 }

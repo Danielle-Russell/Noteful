@@ -1,7 +1,11 @@
 import React from 'react';
-import Store from './Store'
+import NotefulContext from './Context'
 
-function AddNotePage (props) {
+class AddNotePage extends React.Component {
+
+  static contextType = NotefulContext;
+  render () {
+    const { folders } = this.context
 return (
 <div id="container">
     <form className="add-note">
@@ -12,22 +16,15 @@ return (
         <input name="content" type="textarea" placeholder="content" />
         <label htmlFor="select">Folder Name:</label>
         <select name="select">
-            {Store.folders.map(folder => {
+            {folders.map(folder => {
         return <option>{folder.name}</option>
     })}
     </select>
     <button>Add Note</button>
     </form>
-    <div id="back-btn">
-      <button onClick={() => props.history.goBack()}>	&#8592; Back</button>
-      {props.folder && (
-        <h3>
-          {props.folder.name}
-        </h3>
-      )}
-    </div>
 </div>
 )
+}
 }
 
 export default AddNotePage

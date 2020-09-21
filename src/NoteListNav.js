@@ -1,16 +1,20 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import NotefulContext from './Context'
 
+let countNotesForFolder = (notes = [], folderId) =>
+notes.filter((note) => note.folderId === folderId).length;
 
-export default function NoteListNav(props) {
+export default class NoteListNav extends React.Component{
+  static contextType = NotefulContext;
 
-    let countNotesForFolder = (notes = [], folderId) =>
-    notes.filter((note) => note.folderId === folderId).length;
+render () {
+  const { folders=[], notes=[] } = this.context
 
   return (
     <div id="navs">
       <ul>
-        {props.folders.map(folder =>
+        {folders.map(folder =>
           <li key={folder.id}>
             <NavLink className="folder-link"
               to={`/folder/${folder.id}`}
@@ -18,7 +22,7 @@ export default function NoteListNav(props) {
               {folder.name}
             </NavLink>
             <div id="number">
-                {countNotesForFolder(props.notes, folder.id)}
+                {countNotesForFolder(notes, folder.id)}
               </div>
           </li>
         )}
@@ -29,7 +33,4 @@ export default function NoteListNav(props) {
     </div>
   )
 }
-
-NoteListNav.defaultProps = {
-  folders: []
 }
