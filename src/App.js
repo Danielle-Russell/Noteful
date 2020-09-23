@@ -5,16 +5,36 @@ import NotePageNav from "./NotePageNav";
 import NoteListMain from "./NoteListMain";
 import NotePageMain from "./NotePage";
 import "./App.css";
-import FormPage from "./FormPage";
 import AddNotePage from "./AddNotePage";
 import NotefulContext from "./Context";
 import config from "./config";
+import AddFolder from './AddFolder'
+import ErrorBoundaries from './ErrorBoundaries'
 
 class App extends Component {
   state = {
     notes: [],
     folders: [],
-  };
+    newFolder: {
+      hasError: false,
+      touched: false,
+      name: '',
+    },
+    newNote: {
+      name: {
+        touched: false,
+        value: '',
+      },
+      content: {
+        touched: false,
+        value:'',
+      },
+      folder_id: {
+        touched: false,
+        value: '',
+      }
+    }
+  }
 
   componentDidMount() {
     Promise.all([
@@ -23,7 +43,7 @@ class App extends Component {
     ])
       .then(([notesRes, foldersRes]) => {
         if (!notesRes.ok) return notesRes.json().then((e) => Promise.reject(e));
-        if (!foldersRes.ok)
+        if (!foldersRes.ok) 
           return foldersRes.json().then((e) => Promise.reject(e));
         return Promise.all([notesRes.json(), foldersRes.json()]);
       })
@@ -37,6 +57,41 @@ class App extends Component {
         console.error({ error });
       });
   }
+
+  updateNewFolderName = (name) => {
+    this.setState({
+      newFolder: {
+        hasError: false,
+        touched: true,
+        name: name,
+      }
+    })
+  }
+
+  updateNewNoteData = (input, value) => {
+    this.setState({
+      newNote: {
+        ...this.state.newNote,
+        [input]: {
+          touched: true,
+          value: value,
+        },
+      },
+    })
+  }
+
+  
+addFolder = newFolder => {
+  this.setState({
+    folders: [...this.state.folders, newFolder]
+  })
+}
+
+addNote = note => {
+  this.setState({
+    notes: [...this.state.notes, note],
+  })
+}
 
   deleteNote = (noteId) => {
     this.setState({
@@ -65,7 +120,7 @@ class App extends Component {
         {["/", "/folder/:folderId"].map((path) => (
           <Route exact key={path} path={path} component={NoteListMain} />
         ))}
-        <Route path="/add-folder" component={FormPage} />
+        <Route path="/add-folder" component={AddFolder} />
         <Route path="/add-note" component={AddNotePage} />
         <Route path="/note/:noteId" component={NotePageMain} />
       </>
@@ -77,9 +132,16 @@ class App extends Component {
       folders: this.state.folders,
       notes: this.state.notes,
       deleteNote: this.deleteNote,
+      addFolder: this.addFolder,
+      newFolder: this.state.newFolder,
+      updateNewFolderName: this.updateNewFolderName,
+      newNote: this.state.newNote,
+      handleAddNote: this.addNote,
+      updateNewNoteData: this.updateNewNoteData
     };
     return (
       <NotefulContext.Provider value={contextValue}>
+        <ErrorBoundaries>
         <header>
           <h1>
             <Link to="/">Noteful</Link>
@@ -89,6 +151,7 @@ class App extends Component {
           <nav id="left">{this.renderNavRoutes()}</nav>
           <main id="right">{this.renderMainRoutes()}</main>
         </div>
+        </ErrorBoundaries>
       </NotefulContext.Provider>
     );
   }

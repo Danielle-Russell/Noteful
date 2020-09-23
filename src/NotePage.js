@@ -1,8 +1,9 @@
 import React from 'react'
 import Note from './Note'
 import NotefulContext from './Context'
+import PropTypes from 'prop-types'
 
-export const findNote = (notes=[], noteId) =>
+const findNote = (notes=[], noteId) =>
   notes.find(note => note.id === noteId)
 
 export default class NotePage extends React.Component {
@@ -37,4 +38,9 @@ export default class NotePage extends React.Component {
     </section>
   )
 }
+}
+
+NotePage.propTypes = {
+  history: PropTypes.object,
+  match: PropTypes.object
 }

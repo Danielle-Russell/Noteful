@@ -1,6 +1,6 @@
 import React from 'react';
 import NotefulContext from './Context'
-
+import PropTypes from 'prop-types'
 
 const findFolder = (folders=[], folderId) =>
   folders.find(folder => folder.id === folderId)
@@ -39,3 +39,7 @@ export default class NotePageNav extends React.Component {
 }
 }
 
+NotePageNav.propTypes = {
+  history: PropTypes.object,
+  match: PropTypes.object
+}

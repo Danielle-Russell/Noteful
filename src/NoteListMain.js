@@ -3,6 +3,8 @@ import Note from './Note';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import NotefulContext from './Context'
+import PropTypes from 'prop-types'
+
 
 const getNotesForFolder = (notes=[], folderId) => (
   (!folderId)
@@ -23,6 +25,7 @@ export default class NoteListMain extends React.Component {
     const { notes=[] } = this.context
     const notesForFolder = getNotesForFolder(notes, folderId)
   return (
+
     <section id="noteMain">
       <ul>
         {notesForFolder.map(note =>
@@ -43,3 +46,6 @@ export default class NoteListMain extends React.Component {
 }
 }
 
+NoteListMain.propTypes = {
+  match: PropTypes.object
+}

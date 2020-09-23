@@ -13,24 +13,22 @@ render () {
 
   return (
     <div id="navs">
-      <ul>
-        {folders.map(folder =>
-          <li key={folder.id}>
+        {folders.map(folder => 
             <NavLink className="folder-link"
               to={`/folder/${folder.id}`}
             >
+              <ul>
+                <li key={folder.id}>
               {folder.name}
-            </NavLink>
-            <div id="number">
+              <div id="number">
                 {countNotesForFolder(notes, folder.id)}
               </div>
-          </li>
-        )}
-         <Link to="/add-folder"><button>New Folder</button></Link>
-      </ul>
-      <div>
+              </li>
+              </ul>
+            </NavLink>
+            )}
+            <Link to="/add-folder"><button className="new-folder">New Folder</button></Link>
       </div>
-    </div>
-  )
+)
 }
 }
