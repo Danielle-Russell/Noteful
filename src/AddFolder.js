@@ -18,6 +18,7 @@ export default class AddFolder extends Component {
     )
     .then(response => response.json())
     .then(responseJson=> this.context.addFolder(responseJson))
+    .catch(err => console.log(err))
   }
 
   handleSubmit(event) {
@@ -64,5 +65,10 @@ export default class AddFolder extends Component {
 }
 
 AddFolder.propTypes = {
-  history: PropTypes.object
+  history: PropTypes.object,
+  name: PropTypes.string.isRequired
+}
+
+AddFolder.defaultProps = {
+    name: ''
 }

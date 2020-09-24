@@ -1,10 +1,12 @@
 import React from 'react';
 import NotefulContext from './Context';
-import config from './config'
+import config from './config';
+import PropTypes from 'prop-types';
 
 class AddNotePage extends React.Component {
 
   static contextType = NotefulContext;
+
   addNewNote = note => {
       note.modified = new Date(note.modified);
       fetch(`${config.API_ENDPOINT}/notes`, {
@@ -18,6 +20,7 @@ class AddNotePage extends React.Component {
           return response.json()
         })
         .then(responseJson => this.context.handleAddNote(responseJson))
+        .catch(err => console.log(err))
     }
     parseFolders = () => {
         return this.context.folders.map(folder => (
@@ -80,6 +83,18 @@ return (
 </div>
 )
 }
+}
+
+AddNotePage.propTypes = {
+   name: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    folderId: PropTypes.string.isRequired
+}
+
+AddNotePage.defaultProps = {
+    name: '',
+    content: '',
+    folderId: ''
 }
 
 export default AddNotePage
