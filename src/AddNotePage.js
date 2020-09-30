@@ -20,7 +20,9 @@ class AddNotePage extends React.Component {
           return response.json()
         })
         .then(responseJson => this.context.handleAddNote(responseJson))
-        .catch(err => console.log(err))
+        .catch((error) => {
+          this.setState({ hasError: true})
+        });
     }
     parseFolders = () => {
         return this.context.folders.map(folder => (
@@ -56,6 +58,7 @@ class AddNotePage extends React.Component {
     
     
   render () {
+    console.log(this.context.newNote)
 return (
 <div id="container">
     <form className="add-note" onSubmit={e => this.handleFormSubmit(e)}>

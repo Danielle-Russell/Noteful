@@ -5,13 +5,14 @@ export default class ErrorBoundaries extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false
+      hasError: false,
     };
   }
 
   static getDerivedStateFromError(error) {
-    return {hasError:true};
-
+    return {
+      hasError: true
+    };
   }
   render() {
     if (this.state.hasError){
@@ -26,6 +27,5 @@ export default class ErrorBoundaries extends Component {
   }
 }
 
-ErrorBoundaries.propTypes = {
-  children: PropTypes.array
-}
+
+

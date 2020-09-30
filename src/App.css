@@ -148,7 +148,7 @@ body {
     #container {
         display: flex;
         flex-direction: column;
-        width: 80%;
+        width: 100%;
     }
 
     #note {
@@ -156,7 +156,7 @@ body {
     }
 
     ul, li {
-        width: 100%;
+        width: 85%;
     }
 #left {
     width: auto;

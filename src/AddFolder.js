@@ -18,7 +18,9 @@ export default class AddFolder extends Component {
     )
     .then(response => response.json())
     .then(responseJson=> this.context.addFolder(responseJson))
-    .catch(err => console.log(err))
+    .catch((error) => {
+      this.setState({ hasError: true})
+    });
   }
 
   handleSubmit(event) {
@@ -40,7 +42,7 @@ export default class AddFolder extends Component {
   }
 
   render() {
-    
+    console.log(this.context.newFolder)
     return (  
 
         <form id="note" onSubmit={e => this.handleSubmit(e)}>

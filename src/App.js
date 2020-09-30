@@ -16,7 +16,6 @@ class App extends Component {
     notes: [],
     folders: [],
     newFolder: {
-      hasError: false,
       touched: false,
       name: '',
     },
@@ -54,14 +53,13 @@ class App extends Component {
         this.setState({ notes, folders });
       })
       .catch((error) => {
-        console.error({ error });
+        this.setState({ hasError: true})
       });
   }
 
   updateNewFolderName = (name) => {
     this.setState({
       newFolder: {
-        hasError: false,
         touched: true,
         name: name,
       }
@@ -105,9 +103,10 @@ addNote = note => {
         {["/", "/folder/:folderId"].map((path) => (
           <Route exact key={path} path={path} component={NoteListNav} />
         ))}
-        <Route path="/note/:noteId" component={NotePageNav} />
-        <Route path="/add-folder" component={NotePageNav} />
-        <Route path="/add-note" component={NotePageNav} />;
+        <Route exact path="/note/:noteId" component={NotePageNav} />
+        <Route exact path="/add-folder" component={NotePageNav} />
+        <Route exact path="/add-note" component={NotePageNav} />;
+       
       </>
     );
   }
@@ -117,12 +116,19 @@ addNote = note => {
 
     return (
       <>
+    
         {["/", "/folder/:folderId"].map((path) => (
+         
           <Route exact key={path} path={path} component={NoteListMain} />
         ))}
-        <Route path="/add-folder" component={AddFolder} />
-        <Route path="/add-note" component={AddNotePage} />
-        <Route path="/note/:noteId" component={NotePageMain} />
+        <Route exact path="/add-folder" component={AddFolder} />
+      
+      
+        <Route exact path="/add-note" component={AddNotePage} />
+       
+        <Route exact path="/note/:noteId" component={NotePageMain} />
+       
+        
       </>
     );
   }
@@ -140,19 +146,31 @@ addNote = note => {
       updateNewNoteData: this.updateNewNoteData
     };
     return (
-      <NotefulContext.Provider value={contextValue}>
-        <ErrorBoundaries>
+      
+
+<>
         <header>
           <h1>
             <Link to="/">Noteful</Link>
           </h1>
         </header>
+        <NotefulContext.Provider value={contextValue}>
         <div id="container">
+        <ErrorBoundaries>
+
+        
           <nav id="left">{this.renderNavRoutes()}</nav>
+         
+         
           <main id="right">{this.renderMainRoutes()}</main>
-        </div>
+          
+
+    
         </ErrorBoundaries>
+        </div>
+       
       </NotefulContext.Provider>
+      </>
     );
   }
 }
