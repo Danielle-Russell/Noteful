@@ -10,7 +10,9 @@ export default class NoteListNav extends React.Component{
 
 render () {
   const { folders=[], notes=[] } = this.context
-
+if(folders.length === 0) {
+  throw new Error ("No folders loaded. Issue with Noteful Server")
+}
   return (
     <div id="navs">
       <ul>

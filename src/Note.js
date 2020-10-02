@@ -30,7 +30,9 @@ export default class Note extends React.Component {
   
     })
     .catch(error => {
-      console.error({ error })
+      this.setState({
+        hasError:true,
+      })
     })
 }
 
