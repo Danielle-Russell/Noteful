@@ -3,7 +3,8 @@ import NotefulContext from './Context'
 import PropTypes from 'prop-types'
 
 const findFolder = (folders=[], folderId) =>
-  folders.find(folder => folder.id === folderId)
+  folders.find(folder => folderId === folder.id)
+  
 
 const findNote = (notes=[], noteId) =>
   notes.find(note => note.id === noteId)
@@ -19,6 +20,7 @@ export default class NotePageNav extends React.Component {
   }
 
   static contextType = NotefulContext;
+
 
   render () {
     const { notes, folders } = this.context

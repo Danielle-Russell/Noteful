@@ -22,7 +22,8 @@ export default class Note extends React.Component {
   })
     .then(res => {
       if (!res.ok)
-        return res.json().then(e => Promise.reject(e))
+        return res.json()
+        .then(e => Promise.reject(e))
       return res.json()
     })
     .then(() => {
@@ -30,14 +31,12 @@ export default class Note extends React.Component {
   
     })
     .catch(error => {
-      this.setState({
-        hasError:true,
-      })
+      console.log( {error} )
     })
 }
-
 render () {
   const { name, id, modified } = this.props;
+  
   return (
     <div id="note">
       <div>
@@ -64,7 +63,7 @@ render () {
 
 Note.propTypes = {
   onDeleteNote: PropTypes.func,
-  id: PropTypes.string,
-  name: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   modified: PropTypes.object
 }

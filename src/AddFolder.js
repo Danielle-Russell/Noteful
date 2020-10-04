@@ -41,8 +41,9 @@ export default class AddFolder extends Component {
     }
   }
 
+
   render() {
-    console.log(this.context.newFolder)
+    
     return (  
 
         <form id="note" onSubmit={e => this.handleSubmit(e)}>

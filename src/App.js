@@ -8,8 +8,16 @@ import "./App.css";
 import AddNotePage from "./AddNotePage";
 import NotefulContext from "./Context";
 import config from "./config";
-import AddFolder from './AddFolder'
-import ErrorBoundaries from './ErrorBoundaries'
+import AddFolder from "./AddFolder";
+import ErrorBoundaries from "./ErrorBoundaries";
+
+
+//Trigger error boundary
+const ErrorThrower = ({hasError}) => {
+  if (hasError) {
+    throw new Error(); 
+  } return null
+  }
 
 class App extends Component {
   state = {
@@ -17,23 +25,23 @@ class App extends Component {
     folders: [],
     newFolder: {
       touched: false,
-      name: '',
+      name: "",
     },
     newNote: {
       name: {
         touched: false,
-        value: '',
+        value: "",
       },
       content: {
         touched: false,
-        value:'',
+        value: "",
       },
       folder_id: {
         touched: false,
-        value: '',
-      }
-    }
-  }
+        value: "",
+      },
+    },
+  };
 
   componentDidMount() {
     Promise.all([
@@ -42,29 +50,30 @@ class App extends Component {
     ])
       .then(([notesRes, foldersRes]) => {
         if (!notesRes.ok) return notesRes.json().then((e) => Promise.reject(e));
-        if (!foldersRes.ok) 
+        if (!foldersRes.ok)
           return foldersRes.json().then((e) => Promise.reject(e));
         return Promise.all([notesRes.json(), foldersRes.json()]);
       })
       .then(([notes, folders]) => {
         this.setState({ notes, folders });
       })
-      .then(([notes, folders]) => {
-        this.setState({ notes, folders });
-      })
-      .catch((error) => {
-        this.setState({ hasError: true})
+      .catch((e) => {
+        this.setState({
+          hasError: true
+        })
       });
   }
+
+  
 
   updateNewFolderName = (name) => {
     this.setState({
       newFolder: {
         touched: true,
         name: name,
-      }
-    })
-  }
+      },
+    });
+  };
 
   updateNewNoteData = (input, value) => {
     this.setState({
@@ -75,21 +84,20 @@ class App extends Component {
           value: value,
         },
       },
-    })
-  }
+    });
+  };
 
-  
-addFolder = newFolder => {
-  this.setState({
-    folders: [...this.state.folders, newFolder]
-  })
-}
+  addFolder = (newFolder) => {
+    this.setState({
+      folders: [...this.state.folders, newFolder],
+    });
+  };
 
-addNote = note => {
-  this.setState({
-    notes: [...this.state.notes, note],
-  })
-}
+  addNote = (note) => {
+    this.setState({
+      notes: [...this.state.notes, note],
+    });
+  };
 
   deleteNote = (noteId) => {
     this.setState({
@@ -98,40 +106,47 @@ addNote = note => {
   };
 
   renderNavRoutes() {
+    
     return (
       <>
         {["/", "/folder/:folderId"].map((path) => (
+          
           <Route exact key={path} path={path} component={NoteListNav} />
-        ))}
+
+         )
+        )}
+          
         <Route exact path="/note/:noteId" component={NotePageNav} />
         <Route exact path="/add-folder" component={NotePageNav} />
         <Route exact path="/add-note" component={NotePageNav} />;
-       
       </>
     );
   }
+
+  
+    
 
   renderMainRoutes() {
-    
-
+   
+   
     return (
-      <>
     
+      <>
         {["/", "/folder/:folderId"].map((path) => (
-         
+          
+          
           <Route exact key={path} path={path} component={NoteListMain} />
+          
         ))}
         <Route exact path="/add-folder" component={AddFolder} />
-      
-      
+
         <Route exact path="/add-note" component={AddNotePage} />
-       
+
         <Route exact path="/note/:noteId" component={NotePageMain} />
-       
-        
       </>
     );
   }
+
 
   render() {
     const contextValue = {
@@ -143,36 +158,37 @@ addNote = note => {
       updateNewFolderName: this.updateNewFolderName,
       newNote: this.state.newNote,
       handleAddNote: this.addNote,
-      updateNewNoteData: this.updateNewNoteData
+      updateNewNoteData: this.updateNewNoteData,
     };
+    
     return (
-      
-
-<>
+      <>
         <header>
           <h1>
             <Link to="/">Noteful</Link>
           </h1>
         </header>
-        <NotefulContext.Provider value={contextValue}>
-        <div id="container">
         <ErrorBoundaries>
 
-        
-          <nav id="left">{this.renderNavRoutes()}</nav>
-         
-         
-          <main id="right">{this.renderMainRoutes()}</main>
-          
+        <ErrorThrower hasError={this.state.hasError} />
 
-    
-        </ErrorBoundaries>
-        </div>
-       
-      </NotefulContext.Provider>
+        <NotefulContext.Provider value={contextValue}>
+
+          <div id="container">
+           
+              <nav id="left">{this.renderNavRoutes()}</nav>
+
+              <main id="right">{this.renderMainRoutes()}</main>
+          
+          </div>
+
+          </NotefulContext.Provider>
+
+          </ErrorBoundaries>
+        
       </>
     );
-  }
+}
 }
 
 export default App;

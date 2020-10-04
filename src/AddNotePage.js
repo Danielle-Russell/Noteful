@@ -3,6 +3,7 @@ import NotefulContext from './Context';
 import config from './config';
 import PropTypes from 'prop-types';
 
+
 class AddNotePage extends React.Component {
 
   static contextType = NotefulContext;
@@ -21,12 +22,12 @@ class AddNotePage extends React.Component {
         })
         .then(responseJson => this.context.handleAddNote(responseJson))
         .catch((error) => {
-          this.setState({ hasError: true})
+          this.setState({hasError: true})
         });
     }
     parseFolders = () => {
         return this.context.folders.map(folder => (
-          <option key={folder.id} name={folder.id} value={folder.id}>
+         <option key={folder.id} name={folder.id} value={folder.id}>
             {folder.name}
           </option>
         ))
@@ -59,6 +60,7 @@ class AddNotePage extends React.Component {
     
   render () {
     console.log(this.context.newNote)
+    
 return (
 <div id="container">
     <form className="add-note" onSubmit={e => this.handleFormSubmit(e)}>

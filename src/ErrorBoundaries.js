@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 
 export default class ErrorBoundaries extends Component {
   constructor(props) {
@@ -14,8 +13,9 @@ export default class ErrorBoundaries extends Component {
       hasError: true
     };
   }
+
   render() {
-    if (this.state.hasError){
+    if (this.state.hasError) {
       return(
         <div>
           <h2>Error</h2>
