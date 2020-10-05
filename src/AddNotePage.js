@@ -44,6 +44,7 @@ class AddNotePage extends React.Component {
         }
         this.addNewNote(newNote)
         this.props.history.push('/');
+        
       }
       validateName = () => {
         if (this.context.newNote.name.value.length === 0) {
@@ -59,9 +60,9 @@ class AddNotePage extends React.Component {
     
     
   render () {
-    console.log(this.context.newNote)
     
 return (
+
 <div id="container">
     <form className="add-note" onSubmit={e => this.handleFormSubmit(e)}>
         <h2> New Note </h2>

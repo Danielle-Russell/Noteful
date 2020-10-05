@@ -49,5 +49,6 @@ export default class NotePage extends React.Component {
 
 NotePage.propTypes = {
   history: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  modified: PropTypes.string
 }

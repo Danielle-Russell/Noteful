@@ -4,13 +4,19 @@ import NotefulContext from './Context';
 import config from './config';
 import PropTypes from 'prop-types'
 
+const EmptyNote = () => {
+  return <div></div>
+}
 
 export default class Note extends React.Component {
-  static contextType = NotefulContext;
-  static contextType= NotefulContext;
 
+  static contextType = NotefulContext;
+  
   handleClickDelete = e => {
+
+    
     e.preventDefault();
+
     const noteId = this.props.id;
   
 
@@ -28,15 +34,21 @@ export default class Note extends React.Component {
     })
     .then(() => {
       this.context.deleteNote(noteId)
-  
     })
     .catch(error => {
       console.log( {error} )
     })
+
 }
+
 render () {
+ 
   const { name, id, modified } = this.props;
-  
+
+  if (!id) {
+    return <EmptyNote />
+  }
+
   return (
     <div id="note">
       <div>
@@ -55,15 +67,20 @@ render () {
         <button type='button' id="delete" onClick={this.handleClickDelete}>
         Delete Note
       </button>
+
         </div>
       </div>
   )
 }
 }
 
+Note.defaultProps = {
+  id: "",
+  name: ""
+}
+
 Note.propTypes = {
   onDeleteNote: PropTypes.func,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  modified: PropTypes.object
 }

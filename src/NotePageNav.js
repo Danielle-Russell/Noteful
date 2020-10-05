@@ -10,6 +10,7 @@ const findNote = (notes=[], noteId) =>
   notes.find(note => note.id === noteId)
 
 export default class NotePageNav extends React.Component {
+  
   static defaultProps = {
     history: {
       goBack: () => {}

@@ -135,6 +135,10 @@ input, select {
     color: red;
 }
 
+.hide {
+    display: none;
+}
+
 @media only screen and (max-width: 1060px) {
 header {
     background-color: #296f93;
