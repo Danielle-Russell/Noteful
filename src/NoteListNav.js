@@ -36,9 +36,10 @@ render () {
               </li>
             
                )} 
+                           <Link to="/add-folder"><button className="new-folder">New Folder</button></Link>
+
               </ul>
            
-            <Link to="/add-folder"><button className="new-folder">New Folder</button></Link>
       </div>
 )
 }
