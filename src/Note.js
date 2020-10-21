@@ -20,7 +20,7 @@ export default class Note extends React.Component {
     const noteId = this.props.id;
   
 
-  fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
+  fetch(`${config.API_ENDPOINT}/api/notes/${noteId}`, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json'
@@ -75,12 +75,11 @@ render () {
 }
 
 Note.defaultProps = {
-  id: "",
   name: ""
 }
 
 Note.propTypes = {
   onDeleteNote: PropTypes.func,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
 }

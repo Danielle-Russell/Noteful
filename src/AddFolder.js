@@ -7,13 +7,13 @@ export default class AddFolder extends Component {
 
   static contextType = NotefulContext;
 
-  addFolder = (name) => {
-    fetch(`${config.API_ENDPOINT}/folders/`, {
+  addFolder = (folder_name) => {
+    fetch(`${config.API_ENDPOINT}/api/folders`, {
         method: 'POST',
         headers: {
-          'content-type': 'application/json',
+          'Content-type': 'application/json',
         },
-        body: JSON.stringify({name})
+        body: JSON.stringify({folder_name})
       }
     )
     .then(response => response.json())
@@ -22,6 +22,7 @@ export default class AddFolder extends Component {
       this.setState({ hasError: true})
     });
   }
+
 
   handleSubmit(event) {
     event.preventDefault();
@@ -36,14 +37,14 @@ export default class AddFolder extends Component {
   }
 
   validateFolderName() {
-    if ( this.context.newFolder.name.trim().length <= 3 ) {
+    if ( this.context.newFolder.folder_name.trim().length <= 3 ) {
     return 'Name must be more than 3 characters.'
     }
   }
 
 
   render() {
-    
+    console.log(this.context.newFolder)
     return (  
 
         <form id="note" onSubmit={e => this.handleSubmit(e)}>
@@ -56,7 +57,7 @@ export default class AddFolder extends Component {
         </label>
         <input
         type="text"
-        name="newFolder"
+        folder_name="newFolder"
         id="newFolder"
         aria-required="true"
         aria-label="Name"
@@ -69,9 +70,9 @@ export default class AddFolder extends Component {
 
 AddFolder.propTypes = {
   history: PropTypes.object,
-  name: PropTypes.string.isRequired
+  folder_name: PropTypes.string.isRequired
 }
 
 AddFolder.defaultProps = {
-    name: ''
+    folder_name: ''
 }

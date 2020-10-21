@@ -25,10 +25,10 @@ class App extends Component {
     folders: [],
     newFolder: {
       touched: false,
-      name: "",
+      folder_name: "",
     },
     newNote: {
-      name: {
+      note_name: {
         touched: false,
         value: "",
       },
@@ -45,8 +45,8 @@ class App extends Component {
 
   componentDidMount() {
     Promise.all([
-      fetch(`${config.API_ENDPOINT}/notes`),
-      fetch(`${config.API_ENDPOINT}/folders`),
+      fetch(`${config.API_ENDPOINT}/api/notes`),
+      fetch(`${config.API_ENDPOINT}/api/folders`),
     ])
       .then(([notesRes, foldersRes]) => {
         if (!notesRes.ok) return notesRes.json().then((e) => Promise.reject(e));
@@ -70,7 +70,7 @@ class App extends Component {
     this.setState({
       newFolder: {
         touched: true,
-        name: name,
+        folder_name: name,
       },
     });
   };
@@ -160,7 +160,8 @@ class App extends Component {
       handleAddNote: this.addNote,
       updateNewNoteData: this.updateNewNoteData,
     };
-    
+
+  
     return (
       <>
         <header>

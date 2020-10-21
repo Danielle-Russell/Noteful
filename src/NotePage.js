@@ -3,9 +3,9 @@ import Note from './Note'
 import NotefulContext from './Context'
 import PropTypes from 'prop-types'
 
-const findNote = (notes=[], noteId) =>
-  notes.find(note => note.id === noteId)
-  
+const findNote = (notes=[], noteId) => {
+  return notes.find(note => note.id === Number (noteId))
+}
 
 export default class NotePage extends React.Component {
   static defaultProps = {
@@ -24,16 +24,18 @@ export default class NotePage extends React.Component {
     const { notes=[] } = this.context
     const { noteId } = this.props.match.params
     const note = findNote(notes, noteId) || { content: '' };
+    const notesId = parseInt(noteId)
  if (!findNote) {
    throw new Error();
  }
+
   return (
-  
     
     <section id="note-content">
       <Note
-        id={note.id}
-        name={note.name}
+        id={notesId}
+        name={note.note_name}
+        content={note.content}
         modified={note.modified}
         onDeleteNote = {this.deleteNote}
       />

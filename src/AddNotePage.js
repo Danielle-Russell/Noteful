@@ -10,7 +10,7 @@ class AddNotePage extends React.Component {
 
   addNewNote = note => {
       note.modified = new Date(note.modified);
-      fetch(`${config.API_ENDPOINT}/notes`, {
+      fetch(`${config.API_ENDPOINT}/api/notes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -26,9 +26,10 @@ class AddNotePage extends React.Component {
         });
     }
     parseFolders = () => {
+      
         return this.context.folders.map(folder => (
          <option key={folder.id} name={folder.id} value={folder.id}>
-            {folder.name}
+            {folder.folder_name}
           </option>
         ))
       }
@@ -37,17 +38,17 @@ class AddNotePage extends React.Component {
       handleFormSubmit = e => {
         e.preventDefault()
         const newNote = {
-          name: e.target.name.value,
+          note_name: e.target.note_name.value,
           content: e.target.content.value,
-          folderId: e.target.folder_id.value,
+          id: e.target.folder_id.value,
           modified: new Date(),
         }
         this.addNewNote(newNote)
         this.props.history.push('/');
-        
+       
       }
       validateName = () => {
-        if (this.context.newNote.name.value.length === 0) {
+        if (this.context.newNote.note_name.value.length === 0) {
           return 'Name is required'
         }
       }
@@ -60,28 +61,28 @@ class AddNotePage extends React.Component {
     
     
   render () {
-    
+  
 return (
 
 <div id="container">
     <form className="add-note" onSubmit={e => this.handleFormSubmit(e)}>
         <h2> New Note </h2>
-        <label htmlFor="name">Title: {this.context.newNote.name.touched &&
+        <label htmlFor="note_name">Title: {this.context.newNote.note_name.touched &&
         <p className="validate">{this.validateName()}</p>}</label>
-        <input id="name" name="name" type="text" placeholder="name" onChange={e =>
+        <input id="note_name" name="note_name" type="text" placeholder="name" onChange={e =>
               this.context.updateNewNoteData(e.target.name, e.target.value)
             }/>
-        <label htmlFor="content">Content: </label>
-        {this.context.newNote.content.touched && (
+        <label htmlFor="content">Content: 
+        {this.context.newNote.content.touched && 
               <p className="validate">{this.validateDescription()}</p>
-            )}
-        <input name="content" type="textarea" placeholder="content"  onChange={e =>
-              this.context.updateNewNoteData(e.target.name, e.target.value)
+            }</label>
+        <input id="content" name="content" type="text" placeholder="content"  onChange={e =>
+              this.context.updateNewNoteData(e.target.content, e.target.value)
             }/>
         <label htmlFor="folder_id">Folder Name:
 </label>
         <select id="folder_id" name="folder_id" onChange={e =>
-              this.context.updateNewNoteData(e.target.name, e.target.value)}>
+              this.context.updateNewNoteData(e.target.id, e.target.value)}>
        {this.parseFolders()}
        </select>
     <button disabled = {this.validateName()  || this.validateDescription()}>Add Note</button>
@@ -92,15 +93,15 @@ return (
 }
 
 AddNotePage.propTypes = {
-   name: PropTypes.string.isRequired,
+   note_name: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    folderId: PropTypes.string.isRequired
+    folder_id: PropTypes.number.isRequired
 }
 
 AddNotePage.defaultProps = {
-    name: '',
+    note_name: '',
     content: '',
-    folderId: ''
+    folder_id: 1
 }
 
 export default AddNotePage
