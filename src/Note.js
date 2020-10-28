@@ -11,15 +11,17 @@ const EmptyNote = () => {
 export default class Note extends React.Component {
 
   static contextType = NotefulContext;
-  
+
   handleClickDelete = e => {
 
-    
+
     e.preventDefault();
 
-    const noteId = this.props.id;
-  
 
+
+    const noteId = Number(this.props.id)
+
+  
   fetch(`${config.API_ENDPOINT}/api/notes/${noteId}`, {
     method: 'DELETE',
     headers: {
@@ -28,22 +30,31 @@ export default class Note extends React.Component {
   })
     .then(res => {
       if (!res.ok)
-        return res.json()
+        return res
         .then(e => Promise.reject(e))
-      return res.json()
+      return res
     })
     .then(() => {
       this.context.deleteNote(noteId)
-    })
+    }) 
     .catch(error => {
       console.log( {error} )
     })
 
+    if (this.props) {
+     
+        this.props.deleteNote();
+      
+        
+    }
 }
 
+      
+  
+
 render () {
- 
-  const { name, id, modified } = this.props;
+  
+  const { note_name, modified, id } = this.props;
 
   if (!id) {
     return <EmptyNote />
@@ -54,7 +65,7 @@ render () {
       <div>
       <h2>
         <Link to={`/note/${id}`}>
-          {name}
+          {note_name}
         </Link>
       </h2>
       </div>
@@ -64,7 +75,8 @@ render () {
             {modified}
         </div>
         <div>
-        <button type='button' id="delete" onClick={this.handleClickDelete}>
+        <button type='button' id="delete" onClick={this.handleClickDelete}
+        >
         Delete Note
       </button>
 
@@ -75,11 +87,11 @@ render () {
 }
 
 Note.defaultProps = {
-  name: ""
+  note_name: ""
 }
 
 Note.propTypes = {
   onDeleteNote: PropTypes.func,
   id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+  note_name: PropTypes.string.isRequired,
 }

@@ -9,6 +9,7 @@ class AddNotePage extends React.Component {
   static contextType = NotefulContext;
 
   addNewNote = note => {
+console.log(note)
       note.modified = new Date(note.modified);
       fetch(`${config.API_ENDPOINT}/api/notes`, {
         method: 'POST',
@@ -40,8 +41,8 @@ class AddNotePage extends React.Component {
         const newNote = {
           note_name: e.target.note_name.value,
           content: e.target.content.value,
-          id: e.target.folder_id.value,
-          modified: new Date(),
+          folder_id: parseInt(e.target.folder_id.value),
+          modified: new Date()
         }
         this.addNewNote(newNote)
         this.props.history.push('/');
@@ -58,10 +59,17 @@ class AddNotePage extends React.Component {
           return 'Content is required'
         }
       }
-    
+
+      validateFolderId = () => {
+        if (this.context.newNote.folder_id.value.length === 0) {
+          return 'Folder is required'
+        }
+      }
+
+
     
   render () {
-  
+
 return (
 
 <div id="container">
@@ -77,12 +85,14 @@ return (
               <p className="validate">{this.validateDescription()}</p>
             }</label>
         <input id="content" name="content" type="text" placeholder="content"  onChange={e =>
-              this.context.updateNewNoteData(e.target.content, e.target.value)
+              this.context.updateNewNoteData(e.target.name, e.target.value)
             }/>
         <label htmlFor="folder_id">Folder Name:
+        <p className="validate">{this.validateFolderId()}</p>
+
 </label>
         <select id="folder_id" name="folder_id" onChange={e =>
-              this.context.updateNewNoteData(e.target.id, e.target.value)}>
+              this.context.updateNewNoteData(e.target.name, e.target.value)}>
        {this.parseFolders()}
        </select>
     <button disabled = {this.validateName()  || this.validateDescription()}>Add Note</button>
@@ -95,13 +105,12 @@ return (
 AddNotePage.propTypes = {
    note_name: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
-    folder_id: PropTypes.number.isRequired
 }
 
 AddNotePage.defaultProps = {
     note_name: '',
     content: '',
-    folder_id: 1
+  
 }
 
 export default AddNotePage

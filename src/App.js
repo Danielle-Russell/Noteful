@@ -3,7 +3,7 @@ import { Route, Link } from "react-router-dom";
 import NoteListNav from "./NoteListNav";
 import NotePageNav from "./NotePageNav";
 import NoteListMain from "./NoteListMain";
-import NotePageMain from "./NotePage";
+import NotePage from "./NotePage";
 import "./App.css";
 import AddNotePage from "./AddNotePage";
 import NotefulContext from "./Context";
@@ -142,7 +142,7 @@ class App extends Component {
 
         <Route exact path="/add-note" component={AddNotePage} />
 
-        <Route exact path="/note/:noteId" component={NotePageMain} />
+        <Route exact path="/note/:noteId" component={NotePage} />
       </>
     );
   }

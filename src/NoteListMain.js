@@ -13,6 +13,8 @@ const getNotesForFolder = (notes=[], folder_id) => (
 )
 
 
+
+
 export default class NoteListMain extends React.Component {
 
   static defaultProps = {
@@ -20,12 +22,17 @@ export default class NoteListMain extends React.Component {
       params: {}
     }
   }
+
+  deleteNote = noteId => {
+    this.props.history.push(`/`)
+  }
+
   static contextType = NotefulContext;
+  
   render () {
     const { folder_id } = this.props.match.params
     const { notes=[] } = this.context
     const notesForFolder = getNotesForFolder(notes, folder_id) 
-
   return (
 
     <section id="noteMain">
@@ -34,8 +41,11 @@ export default class NoteListMain extends React.Component {
           <li key={note.id}>
             <Note
               id={note.id}
-              name={note.note_name}
+              note_name={note.note_name}
+              content={note.content}
               modified={<Moment>{note.modified}</Moment>}
+              folder_id={note.folder_id}
+              deleteNote={this.deleteNote}
             />
           </li>
         )}
