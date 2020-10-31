@@ -9,7 +9,7 @@ class AddNotePage extends React.Component {
   static contextType = NotefulContext;
 
   addNewNote = note => {
-console.log(note)
+
       note.modified = new Date(note.modified);
       fetch(`${config.API_ENDPOINT}/api/notes`, {
         method: 'POST',
