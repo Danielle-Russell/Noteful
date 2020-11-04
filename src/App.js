@@ -109,7 +109,7 @@ class App extends Component {
     
     return (
       <>
-        {["/", "/folder/:folderId"].map((path) => (
+        {["/", "/folder/:folder_id"].map((path) => (
           
           <Route exact key={path} path={path} component={NoteListNav} />
 
@@ -132,7 +132,7 @@ class App extends Component {
     return (
     
       <>
-        {["/", "/folder/:folderId"].map((path) => (
+        {["/", "/folder/:folder_id"].map((path) => (
           
           
           <Route exact key={path} path={path} component={NoteListMain} />

@@ -9,7 +9,7 @@ import PropTypes from 'prop-types'
 const getNotesForFolder = (notes=[], folder_id) => (
   (!folder_id) 
     ? notes
-    : notes.filter(note => note.folder_id === folder_id)
+    : notes.filter(note => note.folder_id === Number(folder_id))
 )
 
 
@@ -32,6 +32,8 @@ export default class NoteListMain extends React.Component {
   render () {
     const { folder_id } = this.props.match.params
     const { notes=[] } = this.context
+    console.log(this.props.match.params)
+console.log(folder_id)
     const notesForFolder = getNotesForFolder(notes, folder_id) 
   return (
 
